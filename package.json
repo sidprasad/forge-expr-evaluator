@@ -8,9 +8,9 @@
     "test": "test"
   },
   "scripts": {
-    "build": "tsc && npm run build:bundle",
-    "build:tsc": "tsc",
-    "build:bundle": "webpack",
+    "build": "webpack",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:full": "tsc && webpack",
     "test": "jest",
     "antlr4ts": "cd src/forge-antlr && antlr4ts -visitor ForgeLexer.g4 Forge.g4 && cd ../.."
   },

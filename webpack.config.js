@@ -31,7 +31,10 @@ module.exports = {
         use: {
           loader: 'ts-loader',
           options: {
-            configFile: 'tsconfig.json'
+            configFile: 'tsconfig.json',
+            compilerOptions: {
+              declaration: false  // Disable .d.ts generation
+            }
           }
         }
       }
