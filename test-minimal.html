@@ -27,50 +27,81 @@
 
     <script src="dist/forge-expr-evaluator.bundle.js"></script>
     <script>
-        // Sample data from ttt-basic example (simplified)
+        // Sample data from ttt-basic example (proper format)
         const sampleDatum = {
-            "instances": [
-                {
-                    "types": {
-                        "Board": {
-                            "_": "type",
-                            "id": "Board",
-                            "atoms": ["Board0", "Board1", "Board2", "Board3", "Board4", "Board5", "Board6"]
+            "parsed": {
+                "instances": [
+                    {
+                        "types": {
+                            "Board": {
+                                "_": "type",
+                                "id": "Board",
+                                "types": ["Board"],
+                                "atoms": [
+                                    { "_": "atom", "id": "Board0", "type": "Board" },
+                                    { "_": "atom", "id": "Board1", "type": "Board" },
+                                    { "_": "atom", "id": "Board2", "type": "Board" }
+                                ]
+                            },
+                            "Player": {
+                                "_": "type", 
+                                "id": "Player",
+                                "types": ["Player"],
+                                "atoms": []
+                            },
+                            "X": {
+                                "_": "type",
+                                "id": "X",
+                                "types": ["X", "Player"], 
+                                "atoms": [
+                                    { "_": "atom", "id": "X0", "type": "X" }
+                                ]
+                            },
+                            "O": {
+                                "_": "type",
+                                "id": "O",
+                                "types": ["O", "Player"],
+                                "atoms": [
+                                    { "_": "atom", "id": "O0", "type": "O" }
+                                ] 
+                            },
+                            "Int": {
+                                "_": "type",
+                                "id": "Int",
+                                "types": ["Int"],
+                                "atoms": [
+                                    { "_": "atom", "id": "0", "type": "Int" },
+                                    { "_": "atom", "id": "1", "type": "Int" },
+                                    { "_": "atom", "id": "2", "type": "Int" }
+                                ]
+                            }
                         },
-                        "Player": {
-                            "_": "type", 
-                            "id": "Player",
-                            "atoms": []
+                        "relations": {
+                            "Board<:board": {
+                                "_": "relation",
+                                "id": "Board<:board",
+                                "name": "board",
+                                "types": ["Board", "Int", "Int", "Player"],
+                                "tuples": [
+                                    {
+                                        "_": "tuple",
+                                        "types": ["Board", "Int", "Int", "Player"],
+                                        "atoms": ["Board1", "1", "1", "X0"]
+                                    },
+                                    {
+                                        "_": "tuple", 
+                                        "types": ["Board", "Int", "Int", "Player"],
+                                        "atoms": ["Board2", "0", "2", "O0"]
+                                    }
+                                ]
+                            }
                         },
-                        "X": {
-                            "_": "type",
-                            "id": "X", 
-                            "atoms": ["X0"]
-                        },
-                        "O": {
-                            "_": "type",
-                            "id": "O",
-                            "atoms": ["O0"] 
-                        },
-                        "Int": {
-                            "_": "type",
-                            "id": "Int",
-                            "atoms": ["0", "1", "2", "3"]
-                        }
-                    },
-                    "fields": {
-                        "board": {
-                            "_": "field",
-                            "id": "board",
-                            "tuples": [
-                                ["Board1", "1", "1", "X0"],
-                                ["Board2", "0", "2", "O0"],
-                                ["Board2", "1", "1", "X0"]
-                            ]
-                        }
+                        "skolems": {}
                     }
-                }
-            ]
+                ],
+                "bitwidth": 4
+            },
+            "data": "<alloy>Sample tic-tac-toe data</alloy>"
         };
 
         const sampleSourceCode = `
@@ -96,16 +127,22 @@
             try {
                 console.log('Testing expression:', expression);
                 console.log('ForgeExprEvaluator available:', typeof ForgeExprEvaluator);
+                console.log('sampleDatum:', sampleDatum);
+                console.log('sampleSourceCode:', sampleSourceCode);
                 
                 if (typeof ForgeExprEvaluator === 'undefined') {
                     throw new Error('ForgeExprEvaluator is not defined - bundle loading failed');
                 }
                 
                 // Create the evaluator with sample data
+                console.log('Creating evaluator...');
                 const evaluator = new ForgeExprEvaluator.ForgeExprEvaluatorUtil(sampleDatum, sampleSourceCode);
+                console.log('Evaluator created:', evaluator);
                 
                 // Evaluate the expression
+                console.log('Evaluating expression...');
                 const result = evaluator.evaluateExpression(expression, 0);
+                console.log('Result:', result);
                 
                 if (result.error) {
                     resultDiv.className = 'result error';
@@ -119,7 +156,9 @@
                     resultDiv.innerHTML = `
                         <h4>Success!</h4>
                         <p><strong>Expression:</strong> ${expression}</p>
-                        <p><strong>Result:</strong> ${JSON.stringify(result, null, 2)}</p>
+                        <p><strong>Result Type:</strong> ${result.constructor?.name || typeof result}</p>
+                        <p><strong>Result Value:</strong> ${JSON.stringify(result, null, 2)}</p>
+                        <p><strong>Raw Result:</strong> ${String(result)}</p>
                     `;
                 }
                 
