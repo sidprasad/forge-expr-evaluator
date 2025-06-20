@@ -1,8 +1,0 @@
-{
-  "name": "serve-browser-demo",
-  "version": "1.0.0",
-  "description": "Simple server to test browser builds",
-  "scripts": {
-    "serve": "python3 -m http.server 8080 2>/dev/null || python -m SimpleHTTPServer 8080 2>/dev/null || npx http-server -p 8080"
-  }
-}

@@ -64,16 +64,4 @@ package-lock.json
 .eslintcache
 *v8.log
 /lib/
-dist/
-*.log
-.DS_Store
-.vscode/
-.idea/
-*.tsbuildinfo
-coverage/
-.nyc_output/
-*.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+

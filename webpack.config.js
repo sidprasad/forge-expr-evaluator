@@ -1,34 +1,44 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'production',
   entry: './src/index.ts',
   output: {
-    path: path.resolve(__dirname, 'dist'),
     filename: 'forge-expr-evaluator.bundle.js',
+    path: path.resolve(__dirname, 'dist'),
     library: 'ForgeExprEvaluator',
     libraryTarget: 'umd',
     globalObject: 'this'
   },
+  target: 'web',
   resolve: {
     extensions: ['.ts', '.js'],
     fallback: {
-      // Provide browser-compatible fallbacks for Node.js modules
-      "assert": false,
-      "util": false,
-      "stream": false,
-      "buffer": false,
-      "process": false
+      // Node.js polyfills for antlr4ts
+      "assert": require.resolve("assert/"),
+      "buffer": require.resolve("buffer/"),
+      "util": require.resolve("util/"),
+      "stream": require.resolve("stream-browserify"),
+      "os": false,
+      "path": false,
+      "fs": false
     }
   },
   module: {
     rules: [
       {
         test: /\.ts$/,
-        use: 'ts-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        use: {
+          loader: 'ts-loader',
+          options: {
+            configFile: 'tsconfig.json'
+          }
+        }
       }
     ]
   },
-  target: 'web'
+  mode: 'production',
+  optimization: {
+    minimize: true
+  }
 };
