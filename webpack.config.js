@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   entry: './src/index.ts',
@@ -18,11 +19,18 @@ module.exports = {
       "buffer": require.resolve("buffer/"),
       "util": require.resolve("util/"),
       "stream": require.resolve("stream-browserify"),
+      "process": require.resolve("process/browser"),
       "os": false,
       "path": false,
       "fs": false
     }
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+      Buffer: ['buffer', 'Buffer'],
+    }),
+  ],
   module: {
     rules: [
       {
