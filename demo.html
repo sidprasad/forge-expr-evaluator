@@ -28,17 +28,28 @@ some Room {
             const resultDiv = document.getElementById('result');
             
             try {
-                // Test that the library loads and can create a parser
-                const parser = ForgeExprEvaluator.ForgeExprEvaluatorUtil.createForgeParser(input);
-                resultDiv.textContent = "✅ Bundle loaded successfully!\nParser created for input: " + input.substring(0, 50) + "...";
+                // Check if the library is available
+                console.log('ForgeExprEvaluator object:', ForgeExprEvaluator);
+                console.log('Available exports:', Object.keys(ForgeExprEvaluator));
+                
+                // Test that the library loads and can create a ForgeExprEvaluatorUtil
+                const evaluatorUtil = new ForgeExprEvaluator.ForgeExprEvaluatorUtil({}, input);
+                resultDiv.textContent = "✅ Bundle loaded successfully!\nForgeExprEvaluatorUtil created for input: " + input.substring(0, 50) + "...";
             } catch (error) {
                 resultDiv.textContent = "❌ Error: " + error.message;
+                console.error('Full error:', error);
             }
         }
         
         // Test on page load
         window.onload = function() {
-            document.getElementById('result').textContent = "✅ Bundle loaded successfully! Library available as: " + typeof ForgeExprEvaluator;
+            try {
+                console.log('Window ForgeExprEvaluator:', typeof ForgeExprEvaluator, ForgeExprEvaluator);
+                document.getElementById('result').textContent = "✅ Bundle loaded successfully! Library available as: " + typeof ForgeExprEvaluator + "\nExports: " + Object.keys(ForgeExprEvaluator).join(', ');
+            } catch (error) {
+                document.getElementById('result').textContent = "❌ Bundle loading failed: " + error.message;
+                console.error('Bundle load error:', error);
+            }
         };
     </script>
 </body>
