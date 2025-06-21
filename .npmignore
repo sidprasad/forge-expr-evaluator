@@ -1,0 +1,36 @@
+# Source files
+src/
+test/
+*.md
+!README.md
+
+# Config files
+webpack.config.js
+webpack.test.config.js
+tsconfig.json
+tsconfig.browser.json
+jest.config.js
+serve.json
+
+# Demo files
+demo.html
+example.html
+test-minimal.html
+
+# Development
+.github/
+.git/
+.gitignore
+node_modules/
+*.log
+*.tgz
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
